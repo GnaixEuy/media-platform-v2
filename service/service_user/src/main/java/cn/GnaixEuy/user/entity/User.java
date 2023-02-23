@@ -25,6 +25,6 @@ public class User {
     private String telephone;
     private String sex;
     private String area;
-
+    private Date birthday;
 
 }
