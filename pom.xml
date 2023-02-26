@@ -9,6 +9,7 @@
         <module>service</module>
         <module>common</module>
         <module>infrastructure</module>
+        <module>common/spring_security</module>
     </modules>
     <version>0.0.1-SNAPSHOT</version>
     <name>media-v2</name>

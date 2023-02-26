@@ -12,6 +12,8 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: service-acl
-          uri: lb://service-acl
-          predicates: Path=/*/acl/**
+        - id: service-ucenter
+          uri: lb://service-ucenter
+          predicates: Path=/api/v2/ucenter/**
+          filters:
+            - StripPrefix=2
