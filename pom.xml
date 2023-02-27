@@ -11,6 +11,7 @@
 
     <modules>
         <module>common</module>
+        <module>service</module>
     </modules>
 
     <properties>
@@ -29,6 +30,7 @@
         <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
         <mysql-connector-j.version>8.0.32</mysql-connector-j.version>
         <okhttp.version>4.2.2</okhttp.version>
+        <knife4j-openapi2-spring-boot-starter.version>4.0.0</knife4j-openapi2-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.12</pagehelper-spring-boot-starter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -140,6 +142,11 @@
                 <groupId>com.tencentcloudapi</groupId>
                 <artifactId>tencentcloud-sdk-java</artifactId>
                 <version>${tencentcloud-sdk-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi2-spring-boot-starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
