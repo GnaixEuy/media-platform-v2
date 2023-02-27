@@ -1,5 +1,6 @@
 package cn.GnaixEuy.controller;
 
+import cn.GnaixEuy.common.utils.SMSUtils;
 import cn.GnaixEuy.common.utils.result.JSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class HelloController {
-//    private final SMSUtils smsUtils;
+    private final SMSUtils smsUtils;
 
     @ApiOperation(value = "hello - 这是一个hello的测试路由")
     @GetMapping("hello")
@@ -33,10 +34,10 @@ public class HelloController {
     }
 
 
-//    @GetMapping("sms")
-//    public Object sms() throws Exception {
-//        String code = "123456";
-//        smsUtils.sendSMS("", code);
-//        return GraceJSONResult.ok();
-//    }
+    @GetMapping("sms")
+    public Object sms() throws Exception {
+        String code = "123456";
+        smsUtils.sendSMS("13365917711", code);
+        return JSONResult.ok();
+    }
 }

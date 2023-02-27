@@ -1,8 +1,7 @@
 server:
   port: 8099
-
 spring:
-  datasource:                                     # 数据源的相关配置
+  datasource: # 数据源的相关配置
     type: com.zaxxer.hikari.HikariDataSource      # 数据源的类型，可以更改为其他的数据源配置，比如druid
     driver-class-name: com.mysql.jdbc.Driver      # mysql/MariaDB 的数据库驱动类名称
     url: jdbc:mysql://192.168.1.6:3306/media-v2?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
@@ -22,7 +21,10 @@ spring:
     port: 6379
     database: 0
     password:
-  data:
+
+  config:
+    import: optional:file:.env.dev[.properties]
+#  data:
 #    mongodb:
 #      uri: mongodb://root:root@192.168.1.202:27017
 #      database: media-v2
