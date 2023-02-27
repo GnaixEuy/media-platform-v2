@@ -2,7 +2,8 @@ package cn.GnaixEuy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -15,6 +16,8 @@ import org.springframework.context.ApplicationContext;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @SpringBootApplication
+@MapperScan(basePackages = "cn.GnaixEuy.mapper")
+@ComponentScan(basePackages = {"cn.GnaixEuy", "org.n3r.idworker"})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
