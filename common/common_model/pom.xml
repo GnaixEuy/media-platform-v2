@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common_utils</artifactId>
+    <artifactId>common_model</artifactId>
 
 
 </project>
