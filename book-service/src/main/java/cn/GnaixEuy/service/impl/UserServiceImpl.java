@@ -34,7 +34,7 @@ import java.util.Date;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String USER_FACE1 = "http://122.152.205.72:88/group1/M00/00/05/CpoxxF6ZUySASMbOAABBAXhjY0Y649.png";
+    private static final String USER_FACE1 = "http://0.gravatar.com/avatar/92fdb7007ffba99f4348cbc63fb0813b?s=52&d=http%3A%2F%2F121.43.233.5%2Fwp-content%2Fuploads%2F2021%2F04%2Fu32195065192732186892fm26gp0.jpg&r=g";
     @Autowired
     private UsersMapper usersMapper;
     @Autowired
