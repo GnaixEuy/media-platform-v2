@@ -68,21 +68,17 @@ public class PassportController extends BaseInfoProperties {
         if (StringUtils.isBlank(redisCode) || !redisCode.equalsIgnoreCase(code)) {
             return JSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_ERROR);
         }
-
         // 2. 查询数据库，判断用户是否存在
         Users user = userService.queryMobileIsExist(mobile);
         if (user == null) {
             // 2.1 如果用户为空，表示没有注册过，则为null，需要注册信息入库
             user = userService.createUser(mobile);
         }
-
         // 3. 如果不为空，可以继续下方业务，可以保存用户会话信息
         String uToken = UUID.randomUUID().toString();
         this.redis.set(REDIS_USER_TOKEN + ":" + user.getId(), uToken);
-
         // 4. 用户登录注册成功以后，删除redis中的短信验证码
         this.redis.delete(MOBILE_SMS_CODE + ":" + mobile);
-
         // 5. 返回用户信息，包含token令牌
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(user, usersVO);

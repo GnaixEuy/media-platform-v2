@@ -20,6 +20,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -45,10 +46,11 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-//        PathContainer pathContainer = exchange.getRequest().getPath();
-        //TODO
-        System.out.println(exchange.getRequest().getURI());
-//        System.out.println(pathContainer);
+        URI uri = exchange.getRequest().getURI();
+        if (uri.toString().contains("/api/v2/passport")) {
+            System.out.println(exchange.getRequest().getURI());
+            return chain.filter(exchange);
+        }
         String headerUserId = exchange.getRequest().getHeaders().get("headerUserId").get(0);
         String headerUserToken = exchange.getRequest().getHeaders().get("headerUserToken").get(0);
         // 判断header中用户id和token不能为空
