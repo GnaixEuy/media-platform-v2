@@ -1,10 +1,13 @@
 package cn.GnaixEuy.fans.service.impl;
 
+import cn.GnaixEuy.common.enmus.MessageEnum;
 import cn.GnaixEuy.common.enmus.YesOrNo;
 import cn.GnaixEuy.common.utils.PageResultUtil;
 import cn.GnaixEuy.common.utils.PagedGridResult;
+import cn.GnaixEuy.fans.client.MessageFeignClient;
 import cn.GnaixEuy.fans.dao.FansMapper;
 import cn.GnaixEuy.fans.service.FansService;
+import cn.GnaixEuy.model.bo.feign.CreateMsgBo;
 import cn.GnaixEuy.model.pojo.Fans;
 import cn.GnaixEuy.model.vo.FansVO;
 import cn.GnaixEuy.model.vo.VlogerVO;
@@ -38,8 +41,8 @@ public class FansServiceImpl extends ServiceImpl<FansMapper, Fans> implements Fa
     @Autowired
     private RedisUtils redis;
 
-//    @Autowired
-//    private MsgService msgService;
+    @Autowired
+    private MessageFeignClient messageFeignClient;
 
     @Override
     @Transactional
@@ -58,7 +61,13 @@ public class FansServiceImpl extends ServiceImpl<FansMapper, Fans> implements Fa
         }
         this.baseMapper.insert(fans);
         // 系统消息：关注
-//        msgService.createMsg(myId, vlogerId, MessageEnum.FOLLOW_YOU.type, null);
+        this.messageFeignClient.createMsg(
+                new CreateMsgBo(
+                        myId,
+                        vlogerId,
+                        MessageEnum.FOLLOW_YOU.getType(),
+                        null)
+        );
     }
 
     public Fans queryFansRelationship(String fanId, String vlogerId) {

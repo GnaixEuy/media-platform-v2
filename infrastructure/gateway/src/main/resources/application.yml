@@ -18,6 +18,18 @@ spring:
             - Path=/api/v2/passport/**
           filters:
             - StripPrefix=2
+        - id: fans-server
+          uri: lb://fans-server
+          predicates:
+            - Path=/api/v2/fans/**
+          filters:
+            - StripPrefix=2
+        - id: msg-server
+          uri: lb://msg-server
+          predicates:
+            - Path=/api/v2/fans/**
+          filters:
+            - StripPrefix=2
   application:
     name: gateway-server
   redis:

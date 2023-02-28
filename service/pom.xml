@@ -16,6 +16,7 @@
         <module>service_passport</module>
         <module>service_vlog</module>
         <module>service_fans</module>
+        <module>service_message</module>
     </modules>
 
     <dependencies>

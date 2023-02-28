@@ -18,8 +18,7 @@ public class PageResultUtil {
         gridResult.setRows(page.getRecords());
         gridResult.setPage((int) page.getCurrent());
         gridResult.setRecords(page.getTotal());
-        //TODO
-//        gridResult.setTotal(list.getPages());
+        gridResult.setTotal(page.getPages());
         return gridResult;
     }
 }
