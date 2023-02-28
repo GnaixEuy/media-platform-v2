@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "UserInfoController 用户信息接口模块")
-@RequestMapping(value = {"userInfo"})
+@RequestMapping(value = {"/userInfo"})
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserInfoController extends BaseInfoProperties {
@@ -42,7 +42,7 @@ public class UserInfoController extends BaseInfoProperties {
     private final UserService userService;
     private final MinIOConfig minIOConfig;
 
-    @GetMapping(value = {"query"})
+    @GetMapping(value = {"/query"})
     public JSONResult query(@RequestParam String userId) {
 
         Users user = userService.getUser(userId);

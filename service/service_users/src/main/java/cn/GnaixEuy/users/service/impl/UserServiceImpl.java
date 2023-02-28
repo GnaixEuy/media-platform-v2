@@ -65,7 +65,11 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
 
     @Override
     public Users getUser(String userId) {
-        return this.getById(userId);
+        Users user = this.getById(userId);
+        if (user == null) {
+            GraceException.display(ResponseStatusEnum.USER_NOT_EXIST_ERROR);
+        }
+        return user;
     }
 
     @Transactional

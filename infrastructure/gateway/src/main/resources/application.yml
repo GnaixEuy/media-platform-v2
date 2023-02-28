@@ -1,0 +1,16 @@
+server:
+  port: 8099
+spring:
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: userInfo-server
+          uri: lb://userInfo-server
+          predicates:
+            - Path=/api/v2/userInfo/**
+          filters:
+            - StripPrefix=2
+  application:
+    name: gateway-server

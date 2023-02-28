@@ -12,6 +12,7 @@
     <modules>
         <module>common</module>
         <module>service</module>
+        <module>infrastructure</module>
     </modules>
 
     <properties>
@@ -22,22 +23,26 @@
         <jackson.version>2.10.2</jackson.version>
         <java.version>1.8</java.version>
         <joda-time.version>2.10.6</joda-time.version>
+        <knife4j-openapi2-spring-boot-starter.version>4.0.0</knife4j-openapi2-spring-boot-starter.version>
         <knife4j-spring-boot-starter.version>2.0.9</knife4j-spring-boot-starter.version>
         <knife4j-springdoc-ui.version>3.0.3</knife4j-springdoc-ui.version>
         <mapper-spring-boot-starter.version>2.1.5</mapper-spring-boot-starter.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <minio.version>8.2.1</minio.version>
         <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
         <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
         <mysql-connector-j.version>8.0.32</mysql-connector-j.version>
         <okhttp.version>4.2.2</okhttp.version>
-        <knife4j-openapi2-spring-boot-starter.version>4.0.0</knife4j-openapi2-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.12</pagehelper-spring-boot-starter.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j.version>1.7.21</slf4j.version>
-        <spring-boot-starter-parent.version>2.5.4</spring-boot-starter-parent.version>
-        <spring-cloud-alibaba-dependencies.version>2021.1</spring-cloud-alibaba-dependencies.version>
-        <spring-cloud-dependencies.version>2020.0.1</spring-cloud-dependencies.version>
+        <spring-boot-starter-parent.version>2.3.12.RELEASE</spring-boot-starter-parent.version>
+        <spring-cloud-alibaba-dependencies.version>2.2.8.RELEASE</spring-cloud-alibaba-dependencies.version>
+        <spring-cloud-dependencies.version>Hoxton.SR12</spring-cloud-dependencies.version>
         <tencentcloud-sdk-java.version>3.1.270</tencentcloud-sdk-java.version>
     </properties>
 
@@ -158,10 +163,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
