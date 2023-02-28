@@ -1,8 +1,9 @@
-package cn.GnaixEuy.users;
+package cn.GnaixEuy.fans;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -16,11 +17,13 @@ import org.springframework.context.annotation.ComponentScan;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @SpringBootApplication
+@EnableFeignClients
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"cn.GnaixEuy"})
-public class UsersApplication {
+public class FansApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(UsersApplication.class, args);
+        SpringApplication.run(FansApplication.class, args);
     }
 
 }

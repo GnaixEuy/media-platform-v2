@@ -45,26 +45,21 @@ public class UserInfoController extends BaseInfoProperties {
 
     @GetMapping(value = {"query"})
     public JSONResult query(@RequestParam String userId) {
-
         Users user = userService.getUser(userId);
-
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(user, usersVO);
-
         // 我的关注博主总数量
-        String myFollowsCountsStr = (String) redis.get(REDIS_MY_FOLLOWS_COUNTS + ":" + userId);
+        String myFollowsCountsStr = redis.get(REDIS_MY_FOLLOWS_COUNTS + ":" + userId);
         // 我的粉丝总数
-        String myFansCountsStr = (String) redis.get(REDIS_MY_FANS_COUNTS + ":" + userId);
+        String myFansCountsStr = redis.get(REDIS_MY_FANS_COUNTS + ":" + userId);
         // 用户获赞总数，视频博主（点赞/喜欢）总和
 //        String likedVlogCountsStr = redis.get(REDIS_VLOG_BE_LIKED_COUNTS + ":" + userId);
-        String likedVlogerCountsStr = (String) redis.get(REDIS_VLOGER_BE_LIKED_COUNTS + ":" + userId);
-
+        String likedVlogerCountsStr = redis.get(REDIS_VLOGER_BE_LIKED_COUNTS + ":" + userId);
         int myFollowsCounts = 0;
         int myFansCounts = 0;
         int likedVlogCounts = 0;
         int likedVlogerCounts = 0;
         int totalLikeMeCounts;
-
         if (StringUtils.isNotBlank(myFollowsCountsStr)) {
             myFollowsCounts = Integer.parseInt(myFollowsCountsStr);
         }
@@ -78,11 +73,9 @@ public class UserInfoController extends BaseInfoProperties {
             likedVlogerCounts = Integer.parseInt(likedVlogerCountsStr);
         }
         totalLikeMeCounts = likedVlogCounts + likedVlogerCounts;
-
         usersVO.setMyFollowsCounts(myFollowsCounts);
         usersVO.setMyFansCounts(myFansCounts);
         usersVO.setTotalLikeMeCounts(totalLikeMeCounts);
-
         return JSONResult.ok(usersVO);
     }
 

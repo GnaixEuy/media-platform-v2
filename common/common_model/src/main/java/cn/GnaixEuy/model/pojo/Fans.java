@@ -1,5 +1,8 @@
 package cn.GnaixEuy.model.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 
@@ -15,6 +18,7 @@ import javax.persistence.Id;
  */
 public class Fans {
     @Id
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
     /**

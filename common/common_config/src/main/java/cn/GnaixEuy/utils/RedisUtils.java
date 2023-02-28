@@ -38,8 +38,7 @@ public class RedisUtils {
      *
      * @param key
      */
-    public Object get(String key) {
-        System.out.println(this.redisTemplate);
+    public String get(String key) {
         return this.redisTemplate.opsForValue().get(key);
     }
 
@@ -71,6 +70,15 @@ public class RedisUtils {
      */
     public void delete(String key) {
         this.redisTemplate.opsForValue().getOperations().delete(key);
+    }
+
+    /**
+     * 实现命令：DEL key，删除一个key
+     *
+     * @param key
+     */
+    public void del(String key) {
+        this.redisTemplate.delete(key);
     }
 
     /**
@@ -157,6 +165,18 @@ public class RedisUtils {
         return this.redisTemplate.opsForHash().getOperations().hasKey(key);
     }
 
+
+    /**
+     * 实现命令：decrement key，减少key一次
+     *
+     * @param key
+     * @return
+     */
+    public long decrement(String key, long delta) {
+        return redisTemplate.opsForValue().decrement(key, delta);
+    }
+
+
     /**
      * 判断key和hasKey下是否有值
      *
@@ -165,6 +185,17 @@ public class RedisUtils {
      */
     public Boolean hasKey(String key, String hasKey) {
         return this.redisTemplate.opsForHash().hasKey(key, hasKey);
+    }
+
+
+    /**
+     * 实现命令：increment key，增加key一次
+     *
+     * @param key
+     * @return
+     */
+    public long increment(String key, long delta) {
+        return redisTemplate.opsForValue().increment(key, delta);
     }
 
     /**

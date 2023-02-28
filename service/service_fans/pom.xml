@@ -5,18 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.GnaixEuy</groupId>
-        <artifactId>common</artifactId>
+        <artifactId>service</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common_config</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-    </dependencies>
-
+    <artifactId>service_fans</artifactId>
 
 </project>

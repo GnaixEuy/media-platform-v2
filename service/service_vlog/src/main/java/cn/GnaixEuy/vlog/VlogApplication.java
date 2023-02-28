@@ -1,4 +1,4 @@
-package cn.GnaixEuy.users;
+package cn.GnaixEuy.vlog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,9 +18,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"cn.GnaixEuy"})
-public class UsersApplication {
+public class VlogApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UsersApplication.class, args);
+        SpringApplication.run(VlogApplication.class, args);
     }
-
 }

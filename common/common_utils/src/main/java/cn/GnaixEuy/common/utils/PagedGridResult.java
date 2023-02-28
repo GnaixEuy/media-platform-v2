@@ -1,5 +1,9 @@
 package cn.GnaixEuy.common.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 /**
@@ -12,41 +16,14 @@ import java.util.List;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PagedGridResult {
 
-    private int page;			// 当前页数
-    private long total;			// 总页数
-    private long records;		// 总记录数
-    private List<?> rows;		// 每行显示的内容
+    private int page;            // 当前页数
+    private long total;            // 总页数
+    private long records;        // 总记录数
+    private List<?> rows;        // 每行显示的内容
 
-    public int getPage() {
-        return page;
-    }
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-    public long getRecords() {
-        return records;
-    }
-    public void setRecords(long records) {
-        this.records = records;
-    }
-    public List<?> getRows() {
-        return rows;
-    }
-    public void setRows(List<?> rows) {
-        this.rows = rows;
-    }
 }

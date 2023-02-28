@@ -14,8 +14,9 @@
     <modules>
         <module>service_users</module>
         <module>service_passport</module>
+        <module>service_vlog</module>
+        <module>service_fans</module>
     </modules>
-
 
     <dependencies>
         <!--TODO：合并导入问题待排查-->
@@ -49,4 +50,22 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>

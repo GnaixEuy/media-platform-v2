@@ -1,5 +1,7 @@
 package cn.GnaixEuy.model.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Vlog {
     @Id
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
