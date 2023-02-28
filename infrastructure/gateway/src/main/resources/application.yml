@@ -12,5 +12,21 @@ spring:
             - Path=/api/v2/userInfo/**
           filters:
             - StripPrefix=2
+        - id: passport-server
+          uri: lb://passport-server
+          predicates:
+            - Path=/api/v2/passport/**
+          filters:
+            - StripPrefix=2
   application:
     name: gateway-server
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password:
+  datasource: # 数据源的相关配置
+    url: jdbc:mysql://127.0.0.1:3306/media-v2?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: 123456
+

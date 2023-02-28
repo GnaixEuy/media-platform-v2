@@ -15,5 +15,9 @@
         <module>gateway</module>
     </modules>
 
+    <dependencies>
+
+    </dependencies>
+
 
 </project>

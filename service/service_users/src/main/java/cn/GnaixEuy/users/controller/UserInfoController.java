@@ -12,7 +12,6 @@ import cn.GnaixEuy.properties.BaseInfoProperties;
 import cn.GnaixEuy.users.service.UserService;
 import cn.GnaixEuy.utils.MinIOUtils;
 import io.swagger.annotations.Api;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,15 +33,17 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "UserInfoController 用户信息接口模块")
-@RequestMapping(value = {"/userInfo"})
+@RequestMapping(value = {"userInfo"})
 @RestController
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserInfoController extends BaseInfoProperties {
 
-    private final UserService userService;
-    private final MinIOConfig minIOConfig;
+    @Autowired
 
-    @GetMapping(value = {"/query"})
+    private UserService userService;
+    @Autowired
+    private MinIOConfig minIOConfig;
+
+    @GetMapping(value = {"query"})
     public JSONResult query(@RequestParam String userId) {
 
         Users user = userService.getUser(userId);
@@ -51,12 +52,12 @@ public class UserInfoController extends BaseInfoProperties {
         BeanUtils.copyProperties(user, usersVO);
 
         // 我的关注博主总数量
-        String myFollowsCountsStr = redis.get(REDIS_MY_FOLLOWS_COUNTS + ":" + userId);
+        String myFollowsCountsStr = (String) redis.get(REDIS_MY_FOLLOWS_COUNTS + ":" + userId);
         // 我的粉丝总数
-        String myFansCountsStr = redis.get(REDIS_MY_FANS_COUNTS + ":" + userId);
+        String myFansCountsStr = (String) redis.get(REDIS_MY_FANS_COUNTS + ":" + userId);
         // 用户获赞总数，视频博主（点赞/喜欢）总和
 //        String likedVlogCountsStr = redis.get(REDIS_VLOG_BE_LIKED_COUNTS + ":" + userId);
-        String likedVlogerCountsStr = redis.get(REDIS_VLOGER_BE_LIKED_COUNTS + ":" + userId);
+        String likedVlogerCountsStr = (String) redis.get(REDIS_VLOGER_BE_LIKED_COUNTS + ":" + userId);
 
         int myFollowsCounts = 0;
         int myFansCounts = 0;
