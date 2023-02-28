@@ -48,7 +48,6 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         URI uri = exchange.getRequest().getURI();
         if (uri.toString().contains("/api/v2/passport")) {
-            System.out.println(exchange.getRequest().getURI());
             return chain.filter(exchange);
         }
         String headerUserId = exchange.getRequest().getHeaders().get("headerUserId").get(0);

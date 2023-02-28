@@ -75,18 +75,17 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
     @Transactional
     @Override
     public Users updateUserInfo(UpdatedUserBO updatedUserBO) {
-
         Users pendingUser = new Users();
         BeanUtils.copyProperties(updatedUserBO, pendingUser);
         boolean result = this.updateById(pendingUser);
-        if (result) {
+        if (!result) {
             GraceException.display(ResponseStatusEnum.USER_UPDATE_ERROR);
         }
         return getUser(updatedUserBO.getId());
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Users updateUserInfo(UpdatedUserBO updatedUserBO, Integer type) {
         if (Objects.equals(type, UserInfoModifyType.NICKNAME.type)) {
             Users user = this.baseMapper.selectOne(Wrappers.<Users>lambdaQuery().eq(Users::getNickname, updatedUserBO.getNickname()));
@@ -94,13 +93,11 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
                 GraceException.display(ResponseStatusEnum.USER_INFO_UPDATED_NICKNAME_EXIST_ERROR);
             }
         }
-
         if (Objects.equals(type, UserInfoModifyType.NUM.type)) {
             Users user = this.baseMapper.selectOne(Wrappers.<Users>lambdaQuery().eq(Users::getNum, updatedUserBO.getNum()));
             if (user != null) {
                 GraceException.display(ResponseStatusEnum.USER_INFO_UPDATED_NICKNAME_EXIST_ERROR);
             }
-
             Users tempUser = getUser(updatedUserBO.getId());
             if (Objects.equals(tempUser.getCanNumBeUpdated(), YesOrNo.NO.type)) {
                 GraceException.display(ResponseStatusEnum.USER_INFO_CANT_UPDATED_NUM_ERROR);

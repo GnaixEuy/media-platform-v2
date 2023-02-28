@@ -20,6 +20,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml    # mapper映射文件
   global-config:
     db-config:
+      update-strategy: ignored
       select-strategy: not_empty  # 在进行数据库操作的时候，username != null 是否会追加 username != ''
 
 # 日志级别
