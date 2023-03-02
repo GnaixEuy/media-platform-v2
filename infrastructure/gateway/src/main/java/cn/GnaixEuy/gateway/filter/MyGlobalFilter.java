@@ -52,7 +52,8 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
         if (uri.toString().contains("/api/v2/passport") ||
                 uri.toString().contains("vlog") ||
                 uri.toString().contains("list") ||
-                uri.toString().contains("comment")
+                uri.toString().contains("comment") ||
+                uri.toString().contains("userInfo")
         ) {
             return chain.filter(exchange);
         }
