@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
-@FeignClient(value = "users-server", configuration = {FeignConfig.class})
+@FeignClient(value = "userInfo-server", configuration = {FeignConfig.class})
 public interface UsersFeignClient {
 
     @GetMapping(value = {"/userInfo/feign/getUserBase/{userId}"})

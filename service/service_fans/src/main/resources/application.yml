@@ -17,10 +17,10 @@ spring:
 # 整合mybatis
 mybatis-plus:
   type-aliases-package: cn.GnaixEuy.model.pojo       # 所有pojo类所在的包路径
-  mapper-locations: classpath:mapper/*.xml    # mapper映射文件
+  mapper-locations: classpath:cn/GnaixEuy/fans/dao/impl/*.xml    # mapper映射文件
   global-config:
     db-config:
-      update-strategy: ignored
+      update-strategy: not_null
       select-strategy: not_empty  # 在进行数据库操作的时候，username != null 是否会追加 username != ''
 
 # 日志级别

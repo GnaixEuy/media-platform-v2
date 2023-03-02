@@ -3,6 +3,7 @@ package cn.GnaixEuy.vlog.dao;
 import cn.GnaixEuy.model.pojo.Vlog;
 import cn.GnaixEuy.model.vo.IndexVlogVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,14 +23,14 @@ import java.util.Map;
 @Mapper
 public interface VlogMapper extends BaseMapper<Vlog> {
 
-    List<IndexVlogVO> getIndexVlogList(@Param("paramMap") Map<String, Object> map);
+    Page<IndexVlogVO> getIndexVlogList(Page page, @Param("paramMap") Map<String, Object> map);
 
     List<IndexVlogVO> getVlogDetailById(@Param("paramMap") Map<String, Object> map);
 
-    List<IndexVlogVO> getMyLikedVlogList(@Param("paramMap") Map<String, Object> map);
+    Page<IndexVlogVO> getMyLikedVlogList(Page page, @Param("paramMap") Map<String, Object> map);
 
-    List<IndexVlogVO> getMyFollowVlogList(@Param("paramMap") Map<String, Object> map);
+    Page<IndexVlogVO> getMyFollowVlogList(Page page, @Param("paramMap") Map<String, Object> map);
 
-    List<IndexVlogVO> getMyFriendVlogList(@Param("paramMap") Map<String, Object> map);
+    Page<IndexVlogVO> getMyFriendVlogList(Page page, @Param("paramMap") Map<String, Object> map);
 
 }

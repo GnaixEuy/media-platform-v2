@@ -5,12 +5,14 @@ import cn.GnaixEuy.common.utils.JSONResult;
 import cn.GnaixEuy.fans.client.UsersFeignClient;
 import cn.GnaixEuy.fans.service.FansService;
 import cn.GnaixEuy.model.pojo.Users;
-import cn.GnaixEuy.properties.BaseInfoProperties;
+import cn.GnaixEuy.utils.RedisUtils;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import static cn.GnaixEuy.properties.BaseInfoProperties.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -26,8 +28,9 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "FansController 粉丝相关业务功能的接口")
 @RequestMapping(value = {"fans"})
 @RestController
-public class FansController extends BaseInfoProperties {
-
+public class FansController {
+    @Autowired
+    private RedisUtils redis;
     @Autowired
     private UsersFeignClient usersFeignClient;
     @Autowired

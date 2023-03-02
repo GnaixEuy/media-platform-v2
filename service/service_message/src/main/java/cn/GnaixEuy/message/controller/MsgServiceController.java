@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,8 @@ public class MsgServiceController {
     private MsgService msgService;
 
     @PostMapping(value = {"createMsg"})
-    public JSONResult createMsg(CreateMsgBo createMsgBo) {
+    public JSONResult createMsg(@RequestBody CreateMsgBo createMsgBo) {
+        System.out.println(createMsgBo);
         this.msgService.createMsg(
                 createMsgBo.getFromUserId(),
                 createMsgBo.getToUserId(),

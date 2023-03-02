@@ -1,16 +1,23 @@
 package cn.GnaixEuy.vlog.service.impl;
 
+import cn.GnaixEuy.common.enmus.MessageEnum;
 import cn.GnaixEuy.common.enmus.YesOrNo;
+import cn.GnaixEuy.common.utils.JSONResult;
+import cn.GnaixEuy.common.utils.PageResultUtil;
 import cn.GnaixEuy.common.utils.PagedGridResult;
 import cn.GnaixEuy.model.bo.VlogBO;
+import cn.GnaixEuy.model.bo.feign.CreateMsgBo;
 import cn.GnaixEuy.model.pojo.MyLikedVlog;
 import cn.GnaixEuy.model.pojo.Vlog;
 import cn.GnaixEuy.model.vo.IndexVlogVO;
 import cn.GnaixEuy.utils.RedisUtils;
+import cn.GnaixEuy.vlog.client.FansFeignClient;
+import cn.GnaixEuy.vlog.client.MessageFeignClient;
 import cn.GnaixEuy.vlog.dao.MyLikedVlogMapper;
 import cn.GnaixEuy.vlog.dao.VlogMapper;
 import cn.GnaixEuy.vlog.service.VlogService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -45,9 +52,9 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
     private MyLikedVlogMapper myLikedVlogMapper;
 
     @Autowired
-    private FansService fansService;
+    private FansFeignClient fansFeignClient;
     @Autowired
-    private MsgService msgService;
+    private MessageFeignClient messageFeignClient;
 
 
     @Transactional
@@ -68,42 +75,36 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
                                             String search,
                                             Integer page,
                                             Integer pageSize) {
-
-        PageHelper.startPage(page, pageSize);
-
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isNotBlank(search)) {
             map.put("search", search);
         }
-        List<IndexVlogVO> list = this.baseMapper.getIndexVlogList(map);
-
-        for (IndexVlogVO v : list) {
+        Page<IndexVlogVO> indexVlogVOPage = this.baseMapper
+                .getIndexVlogList(new Page<>(page, pageSize), map);
+        for (IndexVlogVO v : indexVlogVOPage.getRecords()) {
             String vlogerId = v.getVlogerId();
             String vlogId = v.getVlogId();
-
             if (StringUtils.isNotBlank(userId)) {
                 // 用户是否关注该博主
-                boolean doIFollowVloger = fansService.queryDoIFollowVloger(userId, vlogerId);
-                v.setDoIFollowVloger(doIFollowVloger);
+                JSONResult jsonResult = this.fansFeignClient.queryDoIFollowVloger(userId, vlogerId);
+                v.setDoIFollowVloger(jsonResult.getData().equals("true"));
                 // 判断当前用户是否点赞过视频
                 v.setDoILikeThisVlog(doILikeVlog(userId, vlogId));
             }
             // 获得当前视频被点赞过的总数
             v.setLikeCounts(getVlogBeLikedCounts(vlogId));
+            //TODO 评论总数
         }
-
-//        return list;
-        return setterPagedGrid(list, page);
+        return PageResultUtil.setterPagedGrid(indexVlogVOPage);
     }
 
     private IndexVlogVO setterVO(IndexVlogVO v, String userId) {
         String vlogerId = v.getVlogerId();
         String vlogId = v.getVlogId();
-
         if (StringUtils.isNotBlank(userId)) {
             // 用户是否关注该博主
-            boolean doIFollowVloger = fansService.queryDoIFollowVloger(userId, vlogerId);
-            v.setDoIFollowVloger(doIFollowVloger);
+            JSONResult jsonResult = this.fansFeignClient.queryDoIFollowVloger(userId, vlogerId);
+            v.setDoIFollowVloger((jsonResult.getData().equals("true")));
             // 判断当前用户是否点赞过视频
             v.setDoILikeThisVlog(doILikeVlog(userId, vlogId));
         }
@@ -132,14 +133,11 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
 
         Map<String, Object> map = new HashMap<>();
         map.put("vlogId", vlogId);
-
         List<IndexVlogVO> list = this.baseMapper.getVlogDetailById(map);
-
         if (list != null && list.size() > 0 && !list.isEmpty()) {
             IndexVlogVO vlogVO = list.get(0);
             return setterVO(vlogVO, userId);
         }
-
         return null;
     }
 
@@ -148,15 +146,13 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
     public void changeToPrivateOrPublic(String userId,
                                         String vlogId,
                                         Integer yesOrNo) {
-        Example example = new Example(Vlog.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("id", vlogId);
-        criteria.andEqualTo("vlogerId", userId);
-
-        Vlog pendingVlog = new Vlog();
-        pendingVlog.setIsPrivate(yesOrNo);
-
-        vlogMapper.updateByExampleSelective(pendingVlog, example);
+        Vlog vlog = this.baseMapper.selectOne(
+                Wrappers.<Vlog>lambdaQuery()
+                        .eq(Vlog::getId, vlogId)
+                        .eq(Vlog::getVlogerId, userId)
+        );
+        vlog.setIsPrivate(yesOrNo);
+        this.baseMapper.updateById(vlog);
     }
 
     @Override
@@ -164,20 +160,18 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
                                            Integer page,
                                            Integer pageSize,
                                            Integer yesOrNo) {
-
-        Example example = new Example(Vlog.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("vlogerId", userId);
-        criteria.andEqualTo("isPrivate", yesOrNo);
-
-        PageHelper.startPage(page, pageSize);
-        List<Vlog> list = vlogMapper.selectByExample(example);
-
-        return setterPagedGrid(list, page);
+        Page<Vlog> vlogPage = this.page(
+                new Page<>(page, pageSize),
+                Wrappers
+                        .<Vlog>lambdaQuery()
+                        .eq(Vlog::getVlogerId, userId)
+                        .eq(Vlog::getIsPrivate, yesOrNo)
+        );
+        return PageResultUtil.setterPagedGrid(vlogPage);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void userLikeVlog(String userId, String vlogId) {
         MyLikedVlog likedVlog = new MyLikedVlog();
         likedVlog.setVlogId(vlogId);
@@ -188,10 +182,12 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
         Map<String, String> msgContent = new HashMap<>();
         msgContent.put("vlogId", vlogId);
         msgContent.put("vlogCover", vlog.getCover());
-        msgService.createMsg(userId,
-                vlog.getVlogerId(),
-                MessageEnum.LIKE_VLOG.type,
-                msgContent);
+        this.messageFeignClient.createMsg(
+                new CreateMsgBo(
+                        userId,
+                        vlog.getVlogerId(),
+                        MessageEnum.LIKE_VLOG.type,
+                        msgContent));
     }
 
     @Override
@@ -213,54 +209,52 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
     public PagedGridResult getMyLikedVlogList(String userId,
                                               Integer page,
                                               Integer pageSize) {
-        PageHelper.startPage(page, pageSize);
-        Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        List<IndexVlogVO> list = this.baseMapper.getMyLikedVlogList(map);
+        Page<IndexVlogVO> indexVlogVOPage = this.baseMapper.getMyLikedVlogList(
+                new Page<>(page, pageSize),
+                new HashMap() {{
+                    this.put("userId", userId);
+                }}
+        );
 
-        return setterPagedGrid(list, page);
+        return PageResultUtil.setterPagedGrid(indexVlogVOPage);
     }
 
     @Override
     public PagedGridResult getMyFollowVlogList(String myId,
                                                Integer page,
                                                Integer pageSize) {
-        PageHelper.startPage(page, pageSize);
+        Page<IndexVlogVO> indexVlogVOPage = this.baseMapper.getMyFollowVlogList(
+                new Page(page, pageSize),
+                new HashMap() {{
+                    this.put("myId", myId);
+                }});
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("myId", myId);
-
-        List<IndexVlogVO> list = this.baseMapper.getMyFollowVlogList(map);
-
-        for (IndexVlogVO v : list) {
+        for (IndexVlogVO v : indexVlogVOPage.getRecords()) {
             String vlogerId = v.getVlogerId();
             String vlogId = v.getVlogId();
-
             if (StringUtils.isNotBlank(myId)) {
                 // 用户必定关注该博主
                 v.setDoIFollowVloger(true);
-
                 // 判断当前用户是否点赞过视频
                 v.setDoILikeThisVlog(doILikeVlog(myId, vlogId));
             }
-
             // 获得当前视频被点赞过的总数
             v.setLikeCounts(getVlogBeLikedCounts(vlogId));
         }
-
-        return setterPagedGrid(list, page);
+        return PageResultUtil.setterPagedGrid(indexVlogVOPage);
     }
 
     @Override
     public PagedGridResult getMyFriendVlogList(String myId,
                                                Integer page,
                                                Integer pageSize) {
-        PageHelper.startPage(page, pageSize);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("myId", myId);
-        List<IndexVlogVO> list = this.baseMapper.getMyFriendVlogList(map);
-        for (IndexVlogVO v : list) {
+        Page<IndexVlogVO> indexVlogVOPage = this.baseMapper.getMyFriendVlogList(
+                new Page(page, pageSize),
+                new HashMap() {{
+                    this.put("myId", myId);
+                }}
+        );
+        for (IndexVlogVO v : indexVlogVOPage.getRecords()) {
             String vlogerId = v.getVlogerId();
             String vlogId = v.getVlogId();
             if (StringUtils.isNotBlank(myId)) {
@@ -272,6 +266,6 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
             // 获得当前视频被点赞过的总数
             v.setLikeCounts(getVlogBeLikedCounts(vlogId));
         }
-        return setterPagedGrid(list, page);
+        return PageResultUtil.setterPagedGrid(indexVlogVOPage);
     }
 }

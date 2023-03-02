@@ -16,7 +16,7 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getIndexVlogList" parameterType="map" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
+    <select id="getIndexVlogList" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
         SELECT
         v.id as vlogId,
         v.vloger_id as vlogerId,
@@ -46,7 +46,7 @@
         DESC
     </select>
 
-    <select id="getVlogDetailById" parameterType="map" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
+    <select id="getVlogDetailById" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
         SELECT v.id              as vlogId,
                v.vloger_id       as vlogerId,
                u.face            as vlogerFace,
@@ -67,7 +67,7 @@
         WHERE v.id = #{paramMap.vlogId}
     </select>
 
-    <select id="getMyLikedVlogList" parameterType="map" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
+    <select id="getMyLikedVlogList" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
         SELECT v.id              as vlogId,
                v.vloger_id       as vlogerId,
                -- u.face as vlogerFace,
@@ -95,7 +95,7 @@
                 DESC
     </select>
 
-    <select id="getMyFollowVlogList" parameterType="map" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
+    <select id="getMyFollowVlogList" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
         SELECT v.id              as vlogId,
                v.vloger_id       as vlogerId,
                u.face            as vlogerFace,
@@ -123,7 +123,7 @@
                 DESC
     </select>
 
-    <select id="getMyFriendVlogList" parameterType="map" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
+    <select id="getMyFriendVlogList" resultType="cn.GnaixEuy.model.vo.IndexVlogVO">
         SELECT v.id              as vlogId,
                v.vloger_id       as vlogerId,
                u.face            as vlogerFace,

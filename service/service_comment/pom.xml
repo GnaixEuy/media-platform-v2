@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service_vlog</artifactId>
+    <artifactId>service_comment</artifactId>
 
     <build>
         <resources>
@@ -29,4 +29,5 @@
             </resource>
         </resources>
     </build>
+
 </project>

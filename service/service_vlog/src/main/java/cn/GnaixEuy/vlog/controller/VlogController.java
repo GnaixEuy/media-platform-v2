@@ -4,12 +4,14 @@ import cn.GnaixEuy.common.enmus.YesOrNo;
 import cn.GnaixEuy.common.utils.JSONResult;
 import cn.GnaixEuy.common.utils.PagedGridResult;
 import cn.GnaixEuy.model.bo.VlogBO;
-import cn.GnaixEuy.properties.BaseInfoProperties;
+import cn.GnaixEuy.utils.RedisUtils;
 import cn.GnaixEuy.vlog.service.VlogService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import static cn.GnaixEuy.properties.BaseInfoProperties.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -25,7 +27,10 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "VlogController 短视频相关业务功能的接口")
 @RequestMapping("vlog")
 @RestController
-public class VlogController extends BaseInfoProperties {
+public class VlogController {
+
+    @Autowired
+    private RedisUtils redis;
 
     @Autowired
     private VlogService vlogService;
@@ -49,7 +54,6 @@ public class VlogController extends BaseInfoProperties {
         if (pageSize == null) {
             pageSize = COMMON_PAGE_SIZE;
         }
-
         PagedGridResult gridResult = vlogService.getIndexVlogList(userId, search, page, pageSize);
         return JSONResult.ok(gridResult);
     }
@@ -163,11 +167,9 @@ public class VlogController extends BaseInfoProperties {
 
         // 我取消点赞的视频，关联关系删除
         vlogService.userUnLikeVlog(userId, vlogId);
-
         redis.decrement(REDIS_VLOGER_BE_LIKED_COUNTS + ":" + vlogerId, 1);
         redis.decrement(REDIS_VLOG_BE_LIKED_COUNTS + ":" + vlogId, 1);
         redis.del(REDIS_USER_LIKE_VLOG + ":" + userId + ":" + vlogId);
-
         return JSONResult.ok();
     }
 

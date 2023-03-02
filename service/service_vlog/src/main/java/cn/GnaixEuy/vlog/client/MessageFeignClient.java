@@ -1,4 +1,4 @@
-package cn.GnaixEuy.fans.client;
+package cn.GnaixEuy.vlog.client;
 
 import cn.GnaixEuy.common.utils.JSONResult;
 import cn.GnaixEuy.config.FeignConfig;

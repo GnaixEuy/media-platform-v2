@@ -3,6 +3,7 @@ package cn.GnaixEuy.gateway.filter;
 import cn.GnaixEuy.common.enmus.ResponseStatusEnum;
 import cn.GnaixEuy.common.exceptions.GraceException;
 import cn.GnaixEuy.common.utils.JSONResult;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -40,6 +41,7 @@ import static cn.GnaixEuy.properties.BaseInfoProperties.REDIS_USER_TOKEN;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @Configuration
+@Slf4j
 public class MyGlobalFilter implements GlobalFilter, Ordered {
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -47,15 +49,27 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         URI uri = exchange.getRequest().getURI();
-        if (uri.toString().contains("/api/v2/passport")) {
+        if (uri.toString().contains("/api/v2/passport") ||
+                uri.toString().contains("/vlog") ||
+                uri.toString().contains("list")) {
             return chain.filter(exchange);
         }
-        String headerUserId = exchange.getRequest().getHeaders().get("headerUserId").get(0);
-        String headerUserToken = exchange.getRequest().getHeaders().get("headerUserToken").get(0);
+        String headerUserId = "";
+        String headerUserToken = "";
+        ServerHttpRequest serverHttpRequest = exchange.getRequest();
+        ServerHttpResponse serverHttpResponse = exchange.getResponse();
+        try {
+            headerUserId = serverHttpRequest.getHeaders().getFirst("headerUserId");
+            headerUserToken = serverHttpRequest.getHeaders().getFirst("headerUserToken");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 判断header中用户id和token不能为空
         if (StringUtils.isNotBlank(headerUserId) && StringUtils.isNotBlank(headerUserToken)) {
+            log.error("1");
             String redisToken = this.redisTemplate.opsForValue().get(REDIS_USER_TOKEN + ":" + headerUserId);
             if (StringUtils.isBlank(redisToken)) {
+                log.error("2");
                 try {
                     return this.invalidTokenMono(exchange);
                 } catch (JSONException e) {
@@ -63,22 +77,30 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
                 }
             } else {
                 // 比较token是否一致，如果不一致，表示用户在别的手机端登录
+                log.error("3");
                 if (!redisToken.equalsIgnoreCase(headerUserToken)) {
                     try {
+                        log.error("4");
                         return this.invalidTokenMono(exchange);
                     } catch (JSONException e) {
+                        e.printStackTrace();
                         GraceException.display(ResponseStatusEnum.TICKET_INVALID);
                     }
                 }
             }
         } else {
             try {
+                log.error("5");
                 return this.invalidTokenMono(exchange);
             } catch (JSONException e) {
                 GraceException.display(ResponseStatusEnum.UN_LOGIN);
             }
         }
-        return chain.filter(exchange);
+        LinkedHashMap<String, String> stringStringHashMap = new LinkedHashMap<>();
+        stringStringHashMap.put("headerUserId", headerUserId);
+        stringStringHashMap.put("headerUserToken", headerUserToken);
+        log.error("6");
+        return this.chainFilterAndSetHeaders(chain, exchange, stringStringHashMap);
     }
 
     /**

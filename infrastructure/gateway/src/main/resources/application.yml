@@ -27,7 +27,19 @@ spring:
         - id: msg-server
           uri: lb://msg-server
           predicates:
-            - Path=/api/v2/fans/**
+            - Path=/api/v2/msg/**
+          filters:
+            - StripPrefix=2
+        - id: vlog-server
+          uri: lb://vlog-server
+          predicates:
+            - Path=/api/v2/vlog/**
+          filters:
+            - StripPrefix=2
+        - id: comment-server
+          uri: lb://comment-server
+          predicates:
+            - Path=/api/v2/comment/**
           filters:
             - StripPrefix=2
   application:

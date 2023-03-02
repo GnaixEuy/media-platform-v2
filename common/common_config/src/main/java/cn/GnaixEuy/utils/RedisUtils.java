@@ -137,6 +137,42 @@ public class RedisUtils {
         return this.redisTemplate.opsForHash().get(key, hashKey);
     }
 
+
+    /**
+     * 累减，使用hash
+     */
+    public long decrementHash(String name, String key, long delta) {
+        delta = delta * (-1);
+        return redisTemplate.opsForHash().increment(name, key, delta);
+    }
+
+
+    /**
+     * 累加，使用hash
+     */
+    public long incrementHash(String name, String key, long delta) {
+        return redisTemplate.opsForHash().increment(name, key, delta);
+    }
+
+
+    /**
+     * hash 设置value
+     */
+    public void setHashValue(String name, String key, String value) {
+        redisTemplate.opsForHash().put(name, key, value);
+    }
+
+    /**
+     * 实现命令：HDEL key field [field ...]，删除哈希表 key 中的一个或多个指定域，不存在的域将被忽略。
+     *
+     * @param key
+     * @param fields
+     */
+    public void hdel(String key, Object... fields) {
+        redisTemplate.opsForHash().delete(key, fields);
+    }
+
+
     /**
      * 获取key的所有值
      *
@@ -187,6 +223,12 @@ public class RedisUtils {
         return this.redisTemplate.opsForHash().hasKey(key, hasKey);
     }
 
+    /**
+     * hash 获得value
+     */
+    public String getHashValue(String name, String key) {
+        return (String) redisTemplate.opsForHash().get(name, key);
+    }
 
     /**
      * 实现命令：increment key，增加key一次

@@ -1,4 +1,4 @@
-package cn.GnaixEuy.fans.client;
+package cn.GnaixEuy.comment.client;
 
 import cn.GnaixEuy.common.utils.JSONResult;
 import cn.GnaixEuy.config.FeignConfig;

@@ -17,6 +17,7 @@
         <module>service_vlog</module>
         <module>service_fans</module>
         <module>service_message</module>
+        <module>service_comment</module>
     </modules>
 
     <dependencies>
@@ -51,22 +52,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
 </project>

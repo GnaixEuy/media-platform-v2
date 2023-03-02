@@ -1,5 +1,10 @@
 package cn.GnaixEuy.model.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
@@ -15,8 +20,12 @@ import java.util.Date;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
     @Id
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
