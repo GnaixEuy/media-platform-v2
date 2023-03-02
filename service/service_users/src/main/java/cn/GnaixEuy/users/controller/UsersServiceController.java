@@ -5,10 +5,7 @@ import cn.GnaixEuy.users.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -29,6 +26,7 @@ public class UsersServiceController {
     @Autowired
     private UserService userService;
 
+    @ResponseBody
     @GetMapping(value = {"getUserBase/{userId}"})
     public JSONResult getUserBaseInfoById(@PathVariable String userId) {
         return JSONResult.ok(this.userService.getUser(userId));

@@ -2,7 +2,6 @@ package cn.GnaixEuy.message.client;
 
 import cn.GnaixEuy.common.utils.JSONResult;
 import cn.GnaixEuy.config.FeignConfig;
-import cn.GnaixEuy.model.pojo.Users;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UsersFeignClient {
 
     @GetMapping(value = {"/userInfo/feign/getUserBase/{userId}"})
-    JSONResult<Users> getUserBaseInfoById(@PathVariable(value = "userId") String userId);
+    JSONResult getUserBaseInfoById(@PathVariable(value = "userId") String userId);
 
 }

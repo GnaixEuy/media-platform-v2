@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JSONResult<T> {
+public class JSONResult implements Serializable {
 
     // 响应业务状态码
     private Integer status;
@@ -32,9 +33,9 @@ public class JSONResult<T> {
     private Boolean success;
 
     // 响应数据，可以是Object，也可以是List或Map等
-    private T data;
+    private Object data;
 
-    public JSONResult(T data) {
+    public JSONResult(Object data) {
         this.status = ResponseStatusEnum.SUCCESS.status();
         this.msg = ResponseStatusEnum.SUCCESS.msg();
         this.success = ResponseStatusEnum.SUCCESS.success();
@@ -47,7 +48,7 @@ public class JSONResult<T> {
         this.success = responseStatus.success();
     }
 
-    public JSONResult(ResponseStatusEnum responseStatus, T data) {
+    public JSONResult(ResponseStatusEnum responseStatus, Object data) {
         this.status = responseStatus.status();
         this.msg = responseStatus.msg();
         this.success = responseStatus.success();

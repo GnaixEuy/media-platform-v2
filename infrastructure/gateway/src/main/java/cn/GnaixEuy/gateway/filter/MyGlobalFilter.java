@@ -50,8 +50,10 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         URI uri = exchange.getRequest().getURI();
         if (uri.toString().contains("/api/v2/passport") ||
-                uri.toString().contains("/vlog") ||
-                uri.toString().contains("list")) {
+                uri.toString().contains("vlog") ||
+                uri.toString().contains("list") ||
+                uri.toString().contains("comment")
+        ) {
             return chain.filter(exchange);
         }
         String headerUserId = "";
@@ -90,6 +92,7 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
             }
         } else {
             try {
+                System.out.println(uri.getPath());
                 log.error("5");
                 return this.invalidTokenMono(exchange);
             } catch (JSONException e) {

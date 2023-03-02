@@ -6,6 +6,8 @@ import cn.GnaixEuy.fans.client.UsersFeignClient;
 import cn.GnaixEuy.fans.service.FansService;
 import cn.GnaixEuy.model.pojo.Users;
 import cn.GnaixEuy.utils.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,12 +41,10 @@ public class FansController {
     @PostMapping(value = {"follow"})
     public JSONResult follow(@RequestParam String myId,
                              @RequestParam String vlogerId) {
-
         // 判断两个id不能为空
         if (StringUtils.isBlank(myId) || StringUtils.isBlank(vlogerId)) {
             return JSONResult.errorCustom(ResponseStatusEnum.SYSTEM_ERROR);
         }
-
         // 判断当前用户，自己不能关注自己
         if (myId.equalsIgnoreCase(vlogerId)) {
             return JSONResult.errorCustom(ResponseStatusEnum.SYSTEM_RESPONSE_NO_INFO);
@@ -53,28 +53,25 @@ public class FansController {
         // 判断两个id对应的用户是否存在
         JSONResult jsonResult = this.usersFeignClient.getUserBaseInfoById(vlogerId);
         if (jsonResult.getSuccess()) {
-            vloger = (Users) jsonResult.getData();
+            vloger = JSON.parseObject(JSON.toJSONString(jsonResult.getData()), new TypeReference<Users>() {
+            });
         }
         jsonResult = this.usersFeignClient.getUserBaseInfoById(myId);
         if (jsonResult.getSuccess()) {
-            myInfo = (Users) jsonResult.getData();
+            myInfo = JSON.parseObject(JSON.toJSONString(jsonResult.getData()), new TypeReference<Users>() {
+            });
         }
-
         // fixme: 两个用户id的数据库查询后的判断，是分开好？还是合并判断好？
         if (myInfo == null || vloger == null) {
             return JSONResult.errorCustom(ResponseStatusEnum.SYSTEM_RESPONSE_NO_INFO);
         }
-
         // 保存粉丝关系到数据库
         fansService.doFollow(myId, vlogerId);
-
         // 博主的粉丝+1，我的关注+1
         redis.increment(REDIS_MY_FOLLOWS_COUNTS + ":" + myId, 1);
         redis.increment(REDIS_MY_FANS_COUNTS + ":" + vlogerId, 1);
-
         // 我和博主的关联关系，依赖redis，不要存储数据库，避免db的性能瓶颈
         redis.set(REDIS_FANS_AND_VLOGGER_RELATIONSHIP + ":" + myId + ":" + vlogerId, "1");
-
         return JSONResult.ok();
     }
 

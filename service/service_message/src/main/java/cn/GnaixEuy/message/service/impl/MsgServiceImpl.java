@@ -8,6 +8,8 @@ import cn.GnaixEuy.message.service.MsgService;
 import cn.GnaixEuy.model.mo.MessageMO;
 import cn.GnaixEuy.model.pojo.Users;
 import cn.GnaixEuy.utils.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -50,10 +52,11 @@ public class MsgServiceImpl implements MsgService {
                           Integer type,
                           Map msgContent) {
 
-        JSONResult<Users> userBaseInfoById = usersFeignClient.getUserBaseInfoById(fromUserId);
+        JSONResult userBaseInfoById = usersFeignClient.getUserBaseInfoById(fromUserId);
         Users fromUser = null;
         if (userBaseInfoById.getSuccess()) {
-            fromUser = userBaseInfoById.getData();
+            fromUser = JSON.parseObject(JSON.toJSONString(userBaseInfoById.getData()), new TypeReference<Users>() {
+            });
         }
         MessageMO messageMO = new MessageMO();
         messageMO.setFromUserId(fromUserId);

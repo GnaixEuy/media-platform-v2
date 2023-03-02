@@ -31,7 +31,6 @@ public class MsgServiceController {
 
     @PostMapping(value = {"createMsg"})
     public JSONResult createMsg(@RequestBody CreateMsgBo createMsgBo) {
-        System.out.println(createMsgBo);
         this.msgService.createMsg(
                 createMsgBo.getFromUserId(),
                 createMsgBo.getToUserId(),

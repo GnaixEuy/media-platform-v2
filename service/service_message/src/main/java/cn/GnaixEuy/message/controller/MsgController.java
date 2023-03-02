@@ -34,9 +34,9 @@ public class MsgController extends BaseInfoProperties {
     private MsgService msgService;
 
     @GetMapping("list")
-    public JSONResult<List<MessageMO>> list(@RequestParam String userId,
-                                            @RequestParam Integer page,
-                                            @RequestParam Integer pageSize) {
+    public JSONResult list(@RequestParam String userId,
+                           @RequestParam Integer page,
+                           @RequestParam Integer pageSize) {
         // mongodb 从0分页，区别于数据库
         if (page == null) {
             page = COMMON_START_PAGE_ZERO;
