@@ -14,6 +14,8 @@ import cn.GnaixEuy.model.pojo.Comment;
 import cn.GnaixEuy.model.pojo.Vlog;
 import cn.GnaixEuy.model.vo.CommentVO;
 import cn.GnaixEuy.utils.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -65,7 +67,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         CommentVO commentVO = new CommentVO();
         BeanUtils.copyProperties(comment, commentVO);
         // 系统消息：评论/回复
-        Vlog vlog = (Vlog) this.vlogFeignClient.getVlog(commentBO.getVlogId()).getData();
+        Vlog vlog = JSON.parseObject(JSON.toJSONString(
+                        this.vlogFeignClient.getVlog(commentBO.getVlogId()).getData()),
+                new TypeReference<Vlog>() {
+                });
         Map msgContent = new HashMap();
         msgContent.put("vlogId", vlog.getId());
         msgContent.put("vlogCover", vlog.getCover());

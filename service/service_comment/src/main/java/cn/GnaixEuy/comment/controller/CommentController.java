@@ -11,6 +11,8 @@ import cn.GnaixEuy.model.pojo.Comment;
 import cn.GnaixEuy.model.pojo.Vlog;
 import cn.GnaixEuy.model.vo.CommentVO;
 import cn.GnaixEuy.utils.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +103,9 @@ public class CommentController {
 
         // 系统消息：点赞评论
         Comment comment = commentService.getComment(commentId);
-        Vlog vlog = (Vlog) this.vlogFeignClient.getVlog(comment.getVlogId()).getData();
+        Vlog vlog = JSON.parseObject(JSON.toJSONString(
+                this.vlogFeignClient.getVlog(comment.getVlogId()).getData()), new TypeReference<Vlog>() {
+        });
         Map msgContent = new HashMap();
         msgContent.put("vlogId", vlog.getId());
         msgContent.put("vlogCover", vlog.getCover());

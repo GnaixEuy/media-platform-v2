@@ -51,7 +51,7 @@ public class PassportController extends BaseInfoProperties {
         // 根据用户ip进行限制，限制用户在60秒之内只能获得一次验证码
         redis.setnx60s(MOBILE_SMS_CODE + ":" + userIp, userIp);
         String code = (int) ((Math.random() * 9 + 1) * 100000) + "";
-//        smsUtils.sendSMS(mobile, code);
+        smsUtils.sendSMS(mobile, code);
         log.info(code);
         // 把验证码放入到redis中，用于后续的验证
         this.redis.set(MOBILE_SMS_CODE + ":" + mobile, code, 30 * 60);
@@ -64,7 +64,7 @@ public class PassportController extends BaseInfoProperties {
         String mobile = registLoginBO.getMobile();
         String code = registLoginBO.getSmsCode();
         // 1. 从redis中获得验证码进行校验是否匹配
-        String redisCode = (String) this.redis.get(MOBILE_SMS_CODE + ":" + mobile);
+        String redisCode = this.redis.get(MOBILE_SMS_CODE + ":" + mobile);
         if (StringUtils.isBlank(redisCode) || !redisCode.equalsIgnoreCase(code)) {
             return JSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_ERROR);
         }
