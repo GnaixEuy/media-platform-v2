@@ -94,13 +94,10 @@ public class CommentController {
     @PostMapping("like")
     public JSONResult like(@RequestParam String commentId,
                            @RequestParam String userId) {
-
         // 故意犯错，bigkey
         redis.incrementHash(REDIS_VLOG_COMMENT_LIKED_COUNTS, commentId, 1);
         redis.setHashValue(REDIS_USER_LIKE_COMMENT, userId + ":" + commentId, "1");
 //        redis.hset(REDIS_USER_LIKE_COMMENT, userId, "1");
-
-
         // 系统消息：点赞评论
         Comment comment = commentService.getComment(commentId);
         Vlog vlog = JSON.parseObject(JSON.toJSONString(
