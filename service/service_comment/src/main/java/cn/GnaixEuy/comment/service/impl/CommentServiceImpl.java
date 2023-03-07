@@ -84,7 +84,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         this.messageFeignClient.createMsg(
                 new CreateMsgBo(
                         commentBO.getCommentUserId(),
-                        commentBO.getCommentUserId(),
+                        commentBO.getVlogerId(),
                         type,
                         msgContent));
         return commentVO;
