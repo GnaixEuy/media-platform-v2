@@ -1,7 +1,6 @@
 package cn.GnaixEuy.model.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -109,5 +108,9 @@ public class Users implements Serializable {
      */
     @Column(name = "updated_time")
     private Date updatedTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    @TableLogic(value = "0", delval = "1")
+    private Boolean deleted;
 
 }
