@@ -11,6 +11,7 @@
 
     <artifactId>service_message</artifactId>
 
+
     <build>
         <resources>
             <resource>

@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
         user.setFace(USER_FACE1);
         user.setBirthday(DateUtil.stringToDate("1900-01-01"));
         user.setSex(Sex.SECRET.type);
-
+        user.setDeleted(false);
         user.setCountry("中国");
         user.setProvince("");
         user.setCity("");

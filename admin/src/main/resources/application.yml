@@ -1,0 +1,30 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-swallow-size: -1  # tomcat默认大小2M，超过2M的文件不会被捕获，需要调整此处大小为100MB或者-1即可
+spring:
+  profiles:
+    active: dev
+  banner:
+    location: classpath:banner/banner.txt
+  servlet:
+    multipart:
+      max-file-size: 5MB      # 文件上传大小限制，设置最大值，不能超过该值，否则报错
+      max-request-size: 5MB     # 文件最大请求限制，用于批量上传
+  application:
+    name: admin-server
+
+# 整合mybatis
+mybatis-plus:
+  type-aliases-package: cn.GnaixEuy.model.pojo       # 所有pojo类所在的包路径
+  mapper-locations: classpath:cn/GnaixEuy/admin/dao/impl/*.xml    # mapper映射文件
+  global-config:
+    db-config:
+      update-strategy: not_null
+      select-strategy: not_empty  # 在进行数据库操作的时候，username != null 是否会追加 username != ''
+
+# 日志级别
+logging:
+  level:
+    root: info
+

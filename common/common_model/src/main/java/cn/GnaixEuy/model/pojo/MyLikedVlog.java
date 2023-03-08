@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -38,5 +39,11 @@ public class MyLikedVlog implements Serializable {
      */
     @Column(name = "vlog_id")
     private String vlogId;
+
+    /**
+     * 喜欢的时间
+     */
+    @Column(name = "created_time")
+    private Date createdTime;
 
 }

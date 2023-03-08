@@ -177,6 +177,7 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
         MyLikedVlog likedVlog = new MyLikedVlog();
         likedVlog.setVlogId(vlogId);
         likedVlog.setUserId(userId);
+        likedVlog.setCreatedTime(new Date());
         myLikedVlogMapper.insert(likedVlog);
         // 系统消息：点赞短视频
         Vlog vlog = this.getVlog(vlogId);
