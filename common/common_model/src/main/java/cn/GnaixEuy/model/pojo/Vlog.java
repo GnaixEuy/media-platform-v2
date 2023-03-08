@@ -93,4 +93,6 @@ public class Vlog implements Serializable {
     @TableLogic(value = "0", delval = "1")
     private Boolean deleted;
 
+    private Integer recommend;
+
 }

@@ -66,6 +66,7 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements Vl
         vlog.setCommentsCounts(0);
         vlog.setIsPrivate(YesOrNo.NO.type);
         vlog.setDeleted(false);
+        vlog.setRecommend(0);
         vlog.setCreatedTime(new Date());
         vlog.setUpdatedTime(new Date());
         this.baseMapper.insert(vlog);

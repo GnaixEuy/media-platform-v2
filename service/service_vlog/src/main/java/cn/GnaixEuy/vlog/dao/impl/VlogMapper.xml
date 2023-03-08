@@ -42,6 +42,7 @@
             AND v.title like '%${paramMap.search}%'
         </if>
         ORDER BY
+        v.recommend,
         v.created_time
         DESC
     </select>

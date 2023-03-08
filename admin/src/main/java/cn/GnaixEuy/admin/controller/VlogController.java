@@ -40,6 +40,14 @@ public class VlogController {
         );
     }
 
+    @PutMapping(value = {"recommend/{id}/{recommendNumber}"})
+    public ResponseResult<String> recommendVlog(@PathVariable String id, @PathVariable String recommendNumber) {
+        Vlog vlog = this.vlogService.getById(id);
+        vlog.setRecommend(Integer.valueOf(recommendNumber));
+        this.vlogService.updateById(vlog);
+        return ResponseResult.success("更新成功");
+    }
+
     @DeleteMapping(value = {"{vlogId}"})
     public ResponseResult<String> delete(@PathVariable String vlogId) {
         this.vlogService.removeById(vlogId);
