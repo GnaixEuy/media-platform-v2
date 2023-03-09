@@ -70,11 +70,11 @@ public class DocApplication {
                 // 生成模板实现
                 .produceType(EngineTemplateType.freemarker)
                 // 自定义文件名称，即生成的数据库文档名称
-                .fileName("媒体平台系统数据库文档").build();
+                .fileName("媒体平台系统数据库文档-v2").build();
         // 生成文档配置（包含以下自定义版本号、描述等配置连接）
         Configuration config = Configuration.builder()
                 // 版本
-                .version("1.0.0")
+                .version("2.0.0")
                 // 描述
                 .description("媒体平台系统数据库设计")
                 // 数据源
