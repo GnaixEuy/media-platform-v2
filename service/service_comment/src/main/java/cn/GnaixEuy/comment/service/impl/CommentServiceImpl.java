@@ -68,14 +68,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         BeanUtils.copyProperties(comment, commentVO);
         // 系统消息：评论/回复
         Vlog vlog = JSON.parseObject(JSON.toJSONString(
-                        this.vlogFeignClient.getVlog(commentBO.getVlogId()).getData()),
-                new TypeReference<Vlog>() {
-                });
-        Map msgContent = new HashMap();
-        msgContent.put("vlogId", vlog.getId());
-        msgContent.put("vlogCover", vlog.getCover());
-        msgContent.put("commentId", comment.getId());
-        msgContent.put("commentContent", commentBO.getContent());
+                this.vlogFeignClient.getVlog(commentBO.getVlogId()).getData()), new TypeReference<Vlog>() {
+        });
+        Map<String, String> msgContent = new HashMap<String, String>() {{
+            this.put("vlogId", vlog.getId());
+            this.put("vlogCover", vlog.getCover());
+            this.put("commentId", comment.getId());
+            this.put("commentContent", commentBO.getContent());
+        }};
         Integer type = MessageEnum.COMMENT_VLOG.type;
         if (StringUtils.isNotBlank(commentBO.getFatherCommentId()) &&
                 !commentBO.getFatherCommentId().equalsIgnoreCase("0")) {

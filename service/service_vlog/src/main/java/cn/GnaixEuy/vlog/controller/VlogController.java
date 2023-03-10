@@ -25,19 +25,16 @@ import static cn.GnaixEuy.properties.BaseInfoProperties.*;
  */
 @Slf4j
 @Api(tags = "VlogController 短视频相关业务功能的接口")
-@RequestMapping("vlog")
 @RestController
+@RequestMapping(value = {"vlog"})
 public class VlogController {
-
     @Autowired
     private RedisUtils redis;
-
     @Autowired
     private VlogService vlogService;
 
-    @PostMapping("publish")
+    @PostMapping(value = {"publish"})
     public JSONResult publish(@RequestBody VlogBO vlogBO) {
-        // FIXME 作业，校验VlogBO
         vlogService.createVlog(vlogBO);
         return JSONResult.ok();
     }

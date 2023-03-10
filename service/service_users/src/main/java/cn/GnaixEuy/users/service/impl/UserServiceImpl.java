@@ -72,8 +72,8 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
         return user;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Users updateUserInfo(UpdatedUserBO updatedUserBO) {
         Users pendingUser = new Users();
         BeanUtils.copyProperties(updatedUserBO, pendingUser);

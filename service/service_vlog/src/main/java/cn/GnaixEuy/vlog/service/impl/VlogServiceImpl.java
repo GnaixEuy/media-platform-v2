@@ -47,18 +47,15 @@ import static cn.GnaixEuy.properties.BaseInfoProperties.REDIS_VLOG_BE_LIKED_COUN
 public class VlogServiceImpl extends ServiceImpl<VlogMapper, Vlog> implements VlogService {
     @Autowired
     private RedisUtils redis;
-
     @Autowired
     private MyLikedVlogMapper myLikedVlogMapper;
-
     @Autowired
     private FansFeignClient fansFeignClient;
     @Autowired
     private MessageFeignClient messageFeignClient;
 
-
-    @Transactional
     @Override
+    @Transactional
     public void createVlog(VlogBO vlogBO) {
         Vlog vlog = new Vlog();
         BeanUtils.copyProperties(vlogBO, vlog);

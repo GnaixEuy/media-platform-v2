@@ -52,7 +52,6 @@ public class CommentController {
     @PostMapping("create")
     public JSONResult create(@RequestBody @Valid CommentBO commentBO)
             throws Exception {
-
         CommentVO commentVO = commentService.createComment(commentBO);
         return JSONResult.ok(commentVO);
     }

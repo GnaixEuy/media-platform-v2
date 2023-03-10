@@ -82,11 +82,8 @@ public class UserInfoController extends BaseInfoProperties {
     @PostMapping(value = {"modifyUserInfo"})
     public JSONResult modifyUserInfo(@RequestBody UpdatedUserBO updatedUserBO,
                                      @RequestParam Integer type) {
-
         UserInfoModifyType.checkUserInfoTypeIsRight(type);
-
         Users newUserInfo = userService.updateUserInfo(updatedUserBO, type);
-
         return JSONResult.ok(newUserInfo);
     }
 
@@ -101,10 +98,8 @@ public class UserInfoController extends BaseInfoProperties {
         MinIOUtils.uploadFile(minIOConfig.getBucketName(),
                 fileName,
                 file.getInputStream());
-        String imgUrl = minIOConfig.getFileHost()
-                + "/"
-                + minIOConfig.getBucketName()
-                + "/"
+        String imgUrl = minIOConfig.getFileHost() + "/"
+                + minIOConfig.getBucketName() + "/"
                 + fileName;
         // 修改图片地址到数据库
         UpdatedUserBO updatedUserBO = new UpdatedUserBO();

@@ -37,7 +37,9 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
 
     @Override
     public Users queryMobileIsExist(String mobile) {
-        return this.baseMapper.selectOne(Wrappers.<Users>lambdaQuery().eq(Users::getMobile, mobile));
+        return this.baseMapper.selectOne(Wrappers
+                .<Users>lambdaQuery()
+                .eq(Users::getMobile, mobile));
     }
 
     @Transactional

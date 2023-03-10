@@ -23,3 +23,4 @@ public interface UsersFeignClient {
     JSONResult getUserBaseInfoById(@PathVariable(value = "userId") String userId);
 
 }
+

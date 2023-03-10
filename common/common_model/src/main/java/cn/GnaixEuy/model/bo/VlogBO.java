@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
@@ -21,7 +23,9 @@ import lombok.ToString;
 @ToString
 public class VlogBO {
     private String id;
+    @NotNull
     private String vlogerId;
+    @NotNull
     private String url;
     private String cover;
     private String title;
